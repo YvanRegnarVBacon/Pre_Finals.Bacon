@@ -121,7 +121,7 @@ public class Java_Bacon {
                     System.out.print("Enter Purok Offical Phone No.: ");
                     String pn = sc.nextLine();
 
-                    String sql = "INSERT INTO tbl_purok(user_name, user_address, user_email, user_pn) VALUES(?,?,?,?)";
+                    String sql = "INSERT INTO tbl_purok(purok_name, purok_address, purok_email, purok_pn) VALUES(?,?,?,?)";
                     conf.addRecord(sql, name, address, email, pn);
                     System.out.println("✅ Record added successfully!");
                     break;
@@ -175,7 +175,7 @@ public static void officialMenu(config conf, Scanner sc) {
                 System.out.println("\n--- Available Puroks ---");
                 String purokSql = "SELECT * FROM tbl_purok";
                 String[] headers = {"ID", "Name", "Address", "Email", "Phone No."};
-                String[] columns = {"user_id", "user_name", "user_address", "user_email", "user_pn"};
+                String[] columns = {"purok_id", "purok_name", "purok_address", "purok_email", "purok_pn"};
                 conf.viewRecords(purokSql, headers, columns);
 
                 System.out.print("Enter Purok ID to assign this resident: ");
@@ -183,7 +183,7 @@ public static void officialMenu(config conf, Scanner sc) {
                 sc.nextLine();
 
                 // ✅ Updated SQL with purok_id
-                String sql = "INSERT INTO tbl_residents(valid_id, full_name, birth_date, civil_status, occupation, religion, education, contact_info, prev_address, curr_address, household_members, voter_info, purok_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO tbl_residents(valid_id, full_name, birth_date, civil_status, occupation, religion, education, contact_info, prev_address, curr_address, household_members, voter_info, purok_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 conf.addRecord(sql, validID, fullName, birthDate, civilStatus, occupation, religion, education, contact, prevAddress, currAddress, household, voter, purokId);
 
                 System.out.println("✅ Resident added successfully and assigned to Purok ID " + purokId + "!");
