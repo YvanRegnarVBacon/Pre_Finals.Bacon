@@ -23,15 +23,14 @@ public class Java_Bacon {
             sc.nextLine();
 
             switch (choice) {
-
+                // === LOGIN ===
                 case 1:
-                    // LOGIN
                     System.out.print("Enter Email: ");
                     String loginEmail = sc.nextLine();
                     System.out.print("Enter Password: ");
                     String loginPass = sc.nextLine();
 
-                    // === HASH PASSWORD BEFORE CHECKING ===
+                    // ✅ Hash entered password before checking
                     String hashedLoginPass = config.hashPassword(loginPass);
 
                     String loginQry = "SELECT * FROM user_tbl WHERE u_email = ? AND u_password = ?";
@@ -49,50 +48,53 @@ public class Java_Bacon {
                         if (role.equalsIgnoreCase("Admin")) {
                             adminMenu(conf, sc);
                         } else if (role.equalsIgnoreCase("Secretary")) {
-                            userMenu(conf, sc); 
+                            userMenu(conf, sc);
                         } else if (role.equalsIgnoreCase("Official")) {
-                            officialMenu(conf, sc); 
+                            officialMenu(conf, sc);
                         } else {
                             System.out.println("Access limited to registered roles only!");
                         }
                     }
                     break;
 
+                // === REGISTER ===
                 case 2:
                     System.out.print("Enter Name: ");
-    String regName = sc.nextLine();
-    System.out.print("Enter Email: ");
-    String regEmail = sc.nextLine();
+                    String regName = sc.nextLine();
+                    System.out.print("Enter Email: ");
+                    String regEmail = sc.nextLine();
 
-    while (true) {
-        String checkQry = "SELECT * FROM user_tbl WHERE u_email = ?";
-        List<Map<String, Object>> res = conf.fetchRecords(checkQry, regEmail);
-        if (res.isEmpty()) break;
-        System.out.print("Email already exists. Enter another: ");
-        regEmail = sc.nextLine();
-    }
+                    // Check if email already exists
+                    while (true) {
+                        String checkQry = "SELECT * FROM user_tbl WHERE u_email = ?";
+                        List<Map<String, Object>> res = conf.fetchRecords(checkQry, regEmail);
+                        if (res.isEmpty()) break;
+                        System.out.print("Email already exists. Enter another: ");
+                        regEmail = sc.nextLine();
+                    }
 
-    System.out.println("Select User Role:");
-    System.out.println("1. Admin");
-    System.out.println("2. Secretary");
-    System.out.println("3. Official");
-    System.out.println("Enter Role: ");
-    int roleChoice = sc.nextInt();
-    sc.nextLine();
-    String regRole = (roleChoice == 1) ? "Admin" : (roleChoice == 2 ? "Secretary" : "Official");
+                    System.out.println("Select User Role: ");
+                    System.out.println("1. Admin");
+                    System.out.println("2. Secretary");
+                    System.out.println("3. Official");
+                    System.out.print("Enter Role: ");
+                    int roleChoice = sc.nextInt();
+                    sc.nextLine();
 
-    System.out.print("Enter Password: ");
-    String regPass = sc.nextLine();
+                    String regRole = (roleChoice == 1) ? "Admin" : (roleChoice == 2 ? "Secretary" : "Official");
 
-    
-    String hashedRegPass = config.hashPassword(regPass);
+                    System.out.print("Enter Password: ");
+                    String regPass = sc.nextLine();
 
-    String regSql = "INSERT INTO user_tbl(u_name, u_email, u_password, u_role) VALUES (?, ?, ?, ?)";
-    conf.addRecord(regSql, regName, regEmail, hashedRegPass, regRole);
+                    // ✅ Hash the password before saving
+                    String hashedPass = config.hashPassword(regPass);
 
-    System.out.println("Account Registered!");
+                    String regSql = "INSERT INTO user_tbl(u_name, u_email, u_password, u_role) VALUES (?, ?, ?, ?)";
+                    conf.addRecord(regSql, regName, regEmail, hashedPass, regRole);
+                    System.out.println("✅ Account Registered Successfully (Password Hashed)!");
                     break;
 
+                // === EXIT ===
                 case 3:
                     System.out.println("Exiting system...");
                     System.exit(0);
@@ -121,9 +123,9 @@ public class Java_Bacon {
                     String name = sc.nextLine();
                     System.out.print("Enter Purok Address: ");
                     String address = sc.nextLine();
-                    System.out.print("Enter Purok Offical Email: ");
+                    System.out.print("Enter Purok Official Email: ");
                     String email = sc.nextLine();
-                    System.out.print("Enter Purok Offical Phone No.: ");
+                    System.out.print("Enter Purok Official Phone No.: ");
                     String pn = sc.nextLine();
 
                     String sql = "INSERT INTO tbl_purok(purok_name, purok_address, purok_email, purok_pn) VALUES(?,?,?,?)";
@@ -200,7 +202,7 @@ public class Java_Bacon {
         }
     }
 
-    // === ADMIN MENU ===
+     // === ADMIN MENU ===
     public static void adminMenu(config conf, Scanner sc) {
         int adminAction;
         do {
